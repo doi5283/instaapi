@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from schemas import UserCreate, UserOut, Token
-from deps import SessionDep, password_hash, create_access_token
+from deps import SessionDep, password_hash, create_access_token, CurrentUserDep
 from models import User
 from sqlalchemy import select
 from fastapi.security import OAuth2PasswordRequestForm
@@ -31,6 +31,12 @@ def login(form: Annotated[OAuth2PasswordRequestForm, Depends()], db: SessionDep)
     # 유저가 없거나 비밀번호가 일치하지 않으면
     if user is None or not password_hash.verify(form.password, user.password_hash): # 방금 입력한 pw(form) + user pw 같은지 확인
         raise HTTPException(status_code=401, detail='아이디 또는 비밀번호가 틀렸습니다.') # 401: 인증오류
-    token = create_access_token(user.id)
+    
+    token = create_access_token(user.id) # 이전방식은 발행한 신분증을 db에 저장하지만 토큰은 사용자에게 전달
     
     return {'access_token': token, 'token_type': 'bearer'}
+
+
+@router.get('/me', response_model=UserOut) # me에 token 보낼거
+def me(user: CurrentUserDep):
+    return user
