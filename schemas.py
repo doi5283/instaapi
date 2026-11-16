@@ -6,6 +6,11 @@ from datetime import datetime
 class UserOut(BaseModel):
     id: int
     username: str
+    
+#user 생성
+class UserCreate(BaseModel):
+    username: str = Field(min_length=3, max_length=20)
+    password: str = Field(min_length=4)
 
 
 class PostOut(BaseModel):
@@ -22,3 +27,6 @@ class PostCreate(BaseModel):
     
 class PostUpdate(BaseModel):
     content: str = Field(min_length=1, max_lenght=500)
+    
+    
+    
