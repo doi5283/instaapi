@@ -22,7 +22,7 @@ class PostOut(BaseModel):
 
 class PostCreate(BaseModel):
     content: str = Field(min_length=1, max_length=500)
-    user_id: int
+    # user_id: int # 현재 로그인한 user id
     
     
 class PostUpdate(BaseModel):

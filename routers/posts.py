@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from deps import SessionDep, postDep
+from deps import SessionDep, postDep, CurrentUserDep
 from sqlalchemy import select
 from models import Post
 from schemas import PostOut, PostCreate, PostUpdate # 데이터리턴, 데이터 생성, 데이터 수정
@@ -29,8 +29,8 @@ def post_detail(post: postDep):
 
 
 @router.post('', response_model=PostOut, status_code=201) # status_code= 201 : post / get은 200
-def post_create(data: PostCreate, db: SessionDep):
-    post = Post(content=data.content, user_id=data.user_id) # 딕셔너리로 들어올 것
+def post_create(data: PostCreate, db: SessionDep, user:CurrentUserDep): # user:currentUserDep = deps.py 작성/ token 값을 기반으로 가져옴
+    post = Post(content=data.content, user_id=user.id) # 딕셔너리로 들어올 것
     db.add(post)
     db.commit()
     return post
@@ -63,6 +63,8 @@ def post_delete(post: postDep, db: SessionDep):
     db.commit()
     
     #return None # 파이썬 기본 규칙(return 작성 안하면 none)
+
+
 
 
 
