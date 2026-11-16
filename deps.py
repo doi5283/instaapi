@@ -17,7 +17,7 @@ def get_db():
 
 SessionDep = Annotated[Session, Depends(get_db)]
 
-
+# 여기서부터 작성
 def get_post_or_404(post_id: int, db: SessionDep):
     post = db.get(Post, post_id) # 데이터조회
     
