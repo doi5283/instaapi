@@ -8,14 +8,14 @@ from deps import password_hash
 
 
 with Session(engine) as db:
-  # 테이블을 비우고 번호(id)도 1부터 다시
+  # 테이블을 비우고 번호(id)도 1부터 다시 (= 초기화)
   db.execute(text('TRUNCATE likes, comments, posts, users RESTART IDENTITY'))
 
   alice = User(username='alice', password_hash=password_hash.hash('pw1234'))
   bob = User(username='bob', password_hash=password_hash.hash('pw1234'))
   carol = User(username='carol', password_hash=password_hash.hash('pw1234'))
-  db.add_all([alice, bob, carol])
-  db.flush()
+  db.add_all([alice, bob, carol]) # 여러개의 데이터를 한번에 add할때 'add_all'
+  db.flush() # 커밋 전 아이디를 부여받아야 할 때(커밋 전까지를 하나의 사이클로 보기위해 = 롤백용/ 중간에 저장 안되면 아이디값을 받을 수 없어서)
 
   # 글마다 쓴 시각을 다르게 — 최신순이 보이도록
   now = datetime.now()
