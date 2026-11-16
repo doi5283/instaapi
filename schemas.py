@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 
 
@@ -12,4 +12,9 @@ class PostOut(BaseModel):
     id: int
     content: str
     created_at: datetime
-    user: UserOut
+    user: UserOut #PostOut 데이터 안 user 컬럼 안에 UserOut 데이터를 중첩
+    
+
+class PostCreate(BaseModel):
+    content: str = Field(min_length=1, max_length=500)
+    user_id: int
