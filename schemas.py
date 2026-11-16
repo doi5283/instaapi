@@ -26,7 +26,11 @@ class PostCreate(BaseModel):
     
     
 class PostUpdate(BaseModel):
-    content: str = Field(min_length=1, max_lenght=500)
-    
+    content: str = Field(min_length=1, max_length=500)
+
+
+class Token(BaseModel):
+    access_token : str #우리가 만들 jwt 토큰
+    token_type: str #발행된 토큰 형태
     
     
