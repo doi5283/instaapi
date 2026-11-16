@@ -4,7 +4,7 @@ from sqlalchemy import select
 from models import Post
 from schemas import PostOut, PostCreate, PostUpdate # 데이터리턴, 데이터 생성, 데이터 수정
 
-router = APIRouter(prefix='/api/posts')
+router = APIRouter(prefix='/api/posts', tags=['posts'])
 
 
 @router.get('', response_model=list[PostOut]) # prefix / 게시물 여러개
