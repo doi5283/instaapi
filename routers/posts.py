@@ -57,6 +57,13 @@ def post_update(post: postDep, data: PostUpdate, db: SessionDep): # data: 수정
     return post
 
 
+@router.delete('/{post_id}', status_code=204) # 삭제후 보여줄 데이터x 상태코드 보여줌(204: 성공하긴 했지만 보여줄 데이터는 없다)/ 안넣어도 상관은 없음. 200으로 나가도 괜찮음
+def post_delete(post: postDep, db: SessionDep):
+    db.delete(post)
+    db.commit()
+    
+    #return None # 파이썬 기본 규칙(return 작성 안하면 none)
+
 
 
 
