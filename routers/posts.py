@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from deps import SessionDep, postDep
 from sqlalchemy import select
 from models import Post
-from schemas import PostOut, PostCreate # 데이터리턴, 데이터 생성
+from schemas import PostOut, PostCreate, PostUpdate # 데이터리턴, 데이터 생성, 데이터 수정
 
 router = APIRouter(prefix='/api/posts')
 
@@ -28,11 +28,37 @@ def post_detail(post: postDep):
 
 
 
-@router.post('', response_model=PostOut, status_code=201) # status code= 201 : post / get은 200
+@router.post('', response_model=PostOut, status_code=201) # status_code= 201 : post / get은 200
 def post_create(data: PostCreate, db: SessionDep):
     post = Post(content=data.content, user_id=data.user_id) # 딕셔너리로 들어올 것
     db.add(post)
     db.commit()
     return post
+
+
+## PATCH
+## 지난시간방법
+# /posts/create
+# /posts/100
+# /posts/delete
+# /posts/update
+
+## 오늘 방법 (RESTful API)
+# n형태의 리소스만 작성(v형태는 crud로만 작성)
+# GET /posts
+# POST /posts
+# PATCH /posts/10
+
+
+@router.patch('/{post_id}', response_model=PostOut)
+def post_update(post: postDep, data: PostUpdate, db: SessionDep): # data: 수정용
+    post.content= data.content # 기존 컨텐츠 = 새로 들어온 컨텐츠 (덮어씌우기)
+    db.commit()
+    return post
+
+
+
+
+
 
 
