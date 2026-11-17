@@ -8,7 +8,7 @@ from typing import Annotated
 
 router = APIRouter(prefix='/api/auth', tags=['auth'])
 
-@router.post('/signup', response_model=UserOut)
+@router.post('/signup', response_model=UserOut, status_code=201)
 def signup(data: UserCreate, db: SessionDep):
     user = db.scalar(select(User).where(User.username == data.username)) # User 테이블 안 User컬럼
 
