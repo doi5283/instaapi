@@ -61,7 +61,7 @@ def get_my_post(post: PostDep, user: CurrentUserDep): # 그 게시글이 내가 
 MyPostDep = Annotated[Post, Depends(get_my_post)]
 
 def get_comment_or_404(comment_id: int, db: SessionDep):
-    comment = db.get(Comment, comment)
+    comment = db.get(Comment, comment_id)
     
     if comment is None:
         raise HTTPException(status_code=404, detail='해당 댓글이 없습니다.')

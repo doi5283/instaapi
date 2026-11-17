@@ -30,7 +30,7 @@ def post_detail(post: PostDep):
 
 @router.post('', response_model=PostOut, status_code=201) # status_code= 201 : post / get은 200
 def post_create(data: PostCreate, db: SessionDep, user:CurrentUserDep): # user:currentUserDep = deps.py 작성/ token 값을 기반으로 가져옴
-    post = Post(content=data.content, user_id=user.id) # 딕셔너리로 들어올 것
+    post = Post(content=data.content, user_id=user.id, image_url=data.image_url) # 딕셔너리로 들어올 것
     db.add(post)
     db.commit()
     return post
