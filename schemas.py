@@ -16,7 +16,12 @@ class UserCreate(BaseModel):
 
 class LikeOut(BaseModel): # post에 종속된 기능
     user_id: int
-
+    
+class CommentOut(BaseModel): # 댓글 1개
+    id: int
+    content: str
+    created_at: datetime
+    user: UserOut
 
 
 class PostOut(BaseModel):
@@ -25,6 +30,7 @@ class PostOut(BaseModel):
     created_at: datetime
     user: UserOut #PostOut 데이터 안 user 컬럼 안에 UserOut 데이터를 중첩
     likes: list[LikeOut]
+    comments: list[CommentOut]
     
 
 class PostCreate(BaseModel):
@@ -43,5 +49,15 @@ class Token(BaseModel):
     
     
 
+
+
+
+
+class CommentCreate(BaseModel):
+    content: str = Field(min_length=1, max_length=100)
+
+
+class CommentUpdate(BaseModel):
+    content: str = Field(min_length=1, max_length=100)
 
     
