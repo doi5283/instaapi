@@ -50,3 +50,11 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: SessionD
     
     return user
 CurrentUserDep = Annotated[User, Depends(get_current_user)]
+
+
+def get_my_post(post: PostDep, user: CurrentUserDep): # 그 게시글이 내가 만든 게시글인지 확인/ postDep: 게시물 가져오기, CurrentUserDep: 토큰에서 유저 가져오기
+    if post.user_id != user.id:
+        raise HTTPException(status_code=403, detail='내 글만 바꿀 수 있습니다.')
+    return post #작성자 맞으면 게시글 리턴
+
+MyPostDep = Annotated[Post, Depends(get_my_post)]
