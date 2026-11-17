@@ -7,6 +7,7 @@ from models import Post, User
 import jwt
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer
+from config import settings
 
 
 password_hash = PasswordHash.recommended()
@@ -24,10 +25,10 @@ def get_post_or_404(post_id: int, db: SessionDep):
     if post is None:
         raise HTTPException(status_code=404, detail='해당 게시물이 없습니다.')
     return post
-postDep = Annotated[Post, Depends(get_post_or_404)]
+PostDep = Annotated[Post, Depends(get_post_or_404)]
 
 
-SECRET_KEY = 'dev-secret'
+SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = 'HS256'
 # 토큰 발행 함수
 def create_access_token(user_id: int):

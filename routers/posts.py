@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from deps import SessionDep, postDep, CurrentUserDep, MyPostDep
+from deps import SessionDep, PostDep, CurrentUserDep, MyPostDep
 from sqlalchemy import select
 from models import Post
 from schemas import PostOut, PostCreate, PostUpdate # 데이터리턴, 데이터 생성, 데이터 수정
@@ -20,7 +20,7 @@ def post_list(db: SessionDep): # 전체 테이블
 
 @router.get('/{post_id}', response_model=PostOut)# 게시물 1개
 # def post_detail(post_id: int, db: SessionDep):
-def post_detail(post: postDep):
+def post_detail(post: PostDep):
     
     # post = db.get(Post, post_id)# 데이터베이스 조회 # postDep 사용으로 생략가능
     return post
@@ -64,7 +64,7 @@ def post_update(post: MyPostDep, data: PostUpdate, db: SessionDep): # 코드 줄
 
 
 @router.delete('/{post_id}', status_code=204) # 삭제후 보여줄 데이터x 상태코드 보여줌(204: 성공하긴 했지만 보여줄 데이터는 없다)/ 안넣어도 상관은 없음. 200으로 나가도 괜찮음
-# def post_delete(post: postDep, db: SessionDep):
+# def post_delete(post: PostDep, db: SessionDep):
 def post_delete(post: MyPostDep, db: SessionDep):
     db.delete(post)
     db.commit()

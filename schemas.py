@@ -13,11 +13,18 @@ class UserCreate(BaseModel):
     password: str = Field(min_length=4)
 
 
+
+class LikeOut(BaseModel): # post에 종속된 기능
+    user_id: int
+
+
+
 class PostOut(BaseModel):
     id: int
     content: str
     created_at: datetime
     user: UserOut #PostOut 데이터 안 user 컬럼 안에 UserOut 데이터를 중첩
+    likes: list[LikeOut]
     
 
 class PostCreate(BaseModel):
@@ -34,4 +41,7 @@ class Token(BaseModel):
     access_token : str #우리가 만들 jwt 토큰
     token_type: str #발행된 토큰 형태
     
+    
+
+
     
