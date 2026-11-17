@@ -3,7 +3,7 @@ from pwdlib import PasswordHash
 from sqlalchemy.orm import Session
 from typing import Annotated
 from database import engine
-from models import Post, User
+from models import Post, User, Comment
 import jwt
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer
@@ -59,3 +59,23 @@ def get_my_post(post: PostDep, user: CurrentUserDep): # 그 게시글이 내가 
     return post #작성자 맞으면 게시글 리턴
 
 MyPostDep = Annotated[Post, Depends(get_my_post)]
+
+def get_comment_or_404(comment_id: int, db: SessionDep):
+    comment = db.get(Comment, comment)
+    
+    if comment is None:
+        raise HTTPException(status_code=404, detail='해당 댓글이 없습니다.')
+    
+    return comment
+    
+CommentDep = Annotated[Comment, Depends(get_comment_or_404)]
+
+    
+def get_my_comment(comment: CommentDep, user: CurrentUserDep):
+    if comment.user_id != user.id:
+        raise HTTPException(status_code=403, detail='내 댓글만 바꿀 수 있습니다.')
+    
+    return comment #다르지 않으면 반환
+
+MyCommentDep = Annotated[Comment, Depends(get_my_comment)]
+
