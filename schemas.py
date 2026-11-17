@@ -50,9 +50,6 @@ class Token(BaseModel):
     
 
 
-
-
-
 class CommentCreate(BaseModel):
     content: str = Field(min_length=1, max_length=100)
 
@@ -60,4 +57,8 @@ class CommentCreate(BaseModel):
 class CommentUpdate(BaseModel):
     content: str = Field(min_length=1, max_length=100)
 
+    
+
+class UploadOut(BaseModel):
+    image_url: str # 파일 받아서 주소 불러주기
     
